@@ -126,7 +126,7 @@ export default class LogEntries extends React.Component<Props, State> {
 										{entry.group.name}
 									</div>
 									<div className="text-sm">
-										{entry.group.type.name} &gt;
+										{entry.group.type.name} &gt;&nbsp;
 										{entry.group.category.map(
 											(cat, index: number) =>
 												cat.name +
