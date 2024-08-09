@@ -11,6 +11,7 @@ interface LogEntry {
 
 interface LogGroup {
 	name: string
+	slug: string
 	category: Array<LogCategory>
 	type: LogType
 }
@@ -87,6 +88,7 @@ export default class LogEntries extends React.Component<Props, State> {
                             }
                             group {
                                 name
+                                slug
                                 category {
                                     name
                                 }
@@ -140,9 +142,12 @@ export default class LogEntries extends React.Component<Props, State> {
 						<div className="w-full">
 							<div className="mt-1">
 								<div className="flex gap-3 mb-2">
-									<div className="text-sm uppercase font-semibold">
+									<a
+										href={`/group/${entry.group.slug}`}
+										className="text-sm uppercase font-semibold"
+									>
 										{entry.group.name}
-									</div>
+									</a>
 									<div className="text-sm">
 										{entry.group.type.name} &gt;&nbsp;
 										{entry.group.category.map(
