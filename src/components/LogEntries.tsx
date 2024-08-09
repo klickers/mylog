@@ -54,8 +54,8 @@ export default class LogEntries extends React.Component<Props, State> {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				query: `
-                    query AllEntries($orderBy: [LogEntryOrderByInput!]!) {
-                        logEntries(orderBy: $orderBy) {
+                    query AllEntries($orderBy: [LogEntryOrderByInput!]!, $skip: Int!) {
+                        logEntries(orderBy: $orderBy, skip: $skip) {
                             createdAt
                             content {
                                 document
@@ -77,6 +77,7 @@ export default class LogEntries extends React.Component<Props, State> {
 							createdAt: "desc",
 						},
 					],
+					skip: this.state.start,
 				},
 			}),
 		})
@@ -114,7 +115,7 @@ export default class LogEntries extends React.Component<Props, State> {
 						<div className="prose text-nowrap">
 							<p className="badge pt-2 pb-3 badge-neutral">
 								{isSameDay(new Date(), entry.createdAt)
-									? format(entry.createdAt, "HH:mmbbb")
+									? format(entry.createdAt, "hh:mmbbb")
 									: format(entry.createdAt, "MM dd")}
 							</p>
 						</div>
