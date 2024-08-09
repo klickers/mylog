@@ -23,7 +23,10 @@ interface LogType {
 	name: string
 }
 
-interface Props {}
+interface Props {
+	entriesBy?: string
+	slug?: string
+}
 
 interface State {
 	numberOfEntries: number
@@ -49,13 +52,35 @@ export default class LogEntries extends React.Component<Props, State> {
 	}
 
 	async fetchNextEntries() {
+		let variables: any = {
+			orderBy: [
+				{
+					createdAt: "desc",
+				},
+			],
+			skip: this.state.start,
+		}
+		if (this.props.entriesBy)
+			variables.where = {
+				[this.props.entriesBy]: {
+					slug: {
+						equals: this.props.slug,
+					},
+				},
+			}
 		const res = await fetch(import.meta.env.PUBLIC_API_URL, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				query: `
-                    query AllEntries($orderBy: [LogEntryOrderByInput!]!, $skip: Int!) {
-                        logEntries(orderBy: $orderBy, skip: $skip) {
+                    query AllEntries($orderBy: [LogEntryOrderByInput!]!, $skip: Int!${
+						this.props.entriesBy
+							? ", $where: LogEntryWhereInput!"
+							: ""
+					}) {
+                        logEntries(orderBy: $orderBy, skip: $skip${
+							this.props.entriesBy ? ", where: $where" : ""
+						}) {
                             createdAt
                             content {
                                 document
@@ -71,14 +96,7 @@ export default class LogEntries extends React.Component<Props, State> {
                             }
                         }
                     }`,
-				variables: {
-					orderBy: [
-						{
-							createdAt: "desc",
-						},
-					],
-					skip: this.state.start,
-				},
+				variables,
 			}),
 		})
 		const data = await res.json()
