@@ -85,7 +85,11 @@ const entries = json.data.logEntries
 									</div>
 									<div class="text-sm">
 										{entry.group.type.name} >
-										{entry.group.category[0].name}
+										{entry.group.category.map(
+											(cat, index) =>
+												cat.name +
+												`${index != entry.group.category.length - 1 ? ", " : ""}`
+										)}
 									</div>
 								</div>
 								<div class="prose">
