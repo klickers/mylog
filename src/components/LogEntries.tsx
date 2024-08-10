@@ -62,26 +62,29 @@ export default class LogEntries extends React.Component<Props, State> {
 			],
 			skip: this.state.start,
 		}
-		if (this.props.entriesBy == "group")
-			variables.where = {
-				group: {
-					slug: {
-						equals: this.props.slug,
-					},
-				},
-			}
-		else if (this.props.entriesBy == "category")
-			variables.where = {
-				group: {
-					category: {
-						some: {
-							slug: {
-								equals: this.props.slug,
+		if (this.props.entriesBy) {
+			variables.where = { group: {} }
+			switch (this.props.entriesBy) {
+				case "group":
+					variables.where.group = {
+						slug: {
+							equals: this.props.slug,
+						},
+					}
+					break
+				case "category":
+					variables.where.group = {
+						category: {
+							some: {
+								slug: {
+									equals: this.props.slug,
+								},
 							},
 						},
-					},
-				},
+					}
+					break
 			}
+		}
 		const res = await fetch(import.meta.env.PUBLIC_API_URL, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
