@@ -23,6 +23,7 @@ interface LogCategory {
 
 interface LogType {
 	name: string
+	slug: string
 }
 
 interface Props {
@@ -83,6 +84,14 @@ export default class LogEntries extends React.Component<Props, State> {
 						},
 					}
 					break
+				case "type":
+					variables.where.group = {
+						type: {
+							slug: {
+								equals: this.props.slug,
+							},
+						},
+					}
 			}
 		}
 		const res = await fetch(import.meta.env.PUBLIC_API_URL, {
@@ -111,6 +120,7 @@ export default class LogEntries extends React.Component<Props, State> {
                                 }
                                 type {
                                     name
+									slug
                                 }
                             }
                         }
@@ -166,7 +176,12 @@ export default class LogEntries extends React.Component<Props, State> {
 										{entry.group.name}
 									</a>
 									<div className="text-sm">
-										{entry.group.type.name} &gt;&nbsp;
+										<a
+											href={`/type/${entry.group.type.slug}`}
+										>
+											{entry.group.type.name}
+										</a>{" "}
+										&gt;&nbsp;
 										{entry.group.category.map(
 											(cat, index: number) => (
 												<a
