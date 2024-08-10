@@ -159,8 +159,14 @@ export default class LogEntries extends React.Component<Props, State> {
 			>
 				{this.state.entries.map((entry: LogEntry) => (
 					<div className="flex gap-6 w-full">
-						<div className="prose text-nowrap">
-							<p className="badge pt-2 pb-3 badge-neutral">
+						<div className="prose text-nowrap w-24">
+							<p
+								className={`badge pt-2 pb-3 ${
+									isSameDay(new Date(), entry.createdAt)
+										? "badge-accent"
+										: "badge-neutral"
+								}`}
+							>
 								{isSameDay(new Date(), entry.createdAt)
 									? format(entry.createdAt, "hh:mmbbb")
 									: format(entry.createdAt, "MMM dd")}
