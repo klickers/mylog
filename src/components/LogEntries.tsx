@@ -136,7 +136,7 @@ export default class LogEntries extends React.Component<Props, State> {
 							<p className="badge pt-2 pb-3 badge-neutral">
 								{isSameDay(new Date(), entry.createdAt)
 									? format(entry.createdAt, "hh:mmbbb")
-									: format(entry.createdAt, "MM dd")}
+									: format(entry.createdAt, "MMM dd")}
 							</p>
 						</div>
 						<div className="w-full">
