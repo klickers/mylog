@@ -18,6 +18,7 @@ interface LogGroup {
 
 interface LogCategory {
 	name: string
+	slug: string
 }
 
 interface LogType {
@@ -61,11 +62,23 @@ export default class LogEntries extends React.Component<Props, State> {
 			],
 			skip: this.state.start,
 		}
-		if (this.props.entriesBy)
+		if (this.props.entriesBy == "group")
 			variables.where = {
-				[this.props.entriesBy]: {
+				group: {
 					slug: {
 						equals: this.props.slug,
+					},
+				},
+			}
+		else if (this.props.entriesBy == "category")
+			variables.where = {
+				group: {
+					category: {
+						some: {
+							slug: {
+								equals: this.props.slug,
+							},
+						},
 					},
 				},
 			}
@@ -91,6 +104,7 @@ export default class LogEntries extends React.Component<Props, State> {
                                 slug
                                 category {
                                     name
+									slug
                                 }
                                 type {
                                     name
@@ -151,16 +165,19 @@ export default class LogEntries extends React.Component<Props, State> {
 									<div className="text-sm">
 										{entry.group.type.name} &gt;&nbsp;
 										{entry.group.category.map(
-											(cat, index: number) =>
-												cat.name +
-												`${
-													index !=
+											(cat, index: number) => (
+												<a
+													href={`/category/${cat.slug}`}
+												>
+													{cat.name}
+													{index !=
 													entry.group.category
 														.length -
 														1
 														? ", "
-														: ""
-												}`
+														: ""}
+												</a>
+											)
 										)}
 									</div>
 								</div>
