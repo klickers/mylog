@@ -181,12 +181,16 @@ export default class LogEntries extends React.Component<Props, State> {
 										{entry.group.name}
 									</a>
 									<div className="text-sm">
-										<a
-											href={`/type/${entry.group.type.slug}`}
-										>
-											{entry.group.type.name}
-										</a>{" "}
-										&gt;&nbsp;
+										{entry.group.type ? (
+											<a
+												href={`/type/${entry.group.type.slug}`}
+											>
+												{entry.group.type.name}
+												&nbsp;&gt;&nbsp;
+											</a>
+										) : (
+											""
+										)}
 										{entry.group.category.map(
 											(cat, index: number) => (
 												<a
