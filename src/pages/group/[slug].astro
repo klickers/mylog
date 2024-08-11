@@ -3,9 +3,6 @@ import Layout from "../../layouts/Layout.astro"
 import LogEntries from "../../components/LogEntries"
 ---
 
-<Layout title="Log">
-	<main>
-		<div class="prose mb-10"><h1>{Astro.params.slug}</h1></div>
-		<LogEntries entriesBy="group" slug={Astro.params.slug} client:load />
-	</main>
+<Layout title={Astro.params.slug ?? "Log"}>
+	<LogEntries entriesBy="group" slug={Astro.params.slug} client:load />
 </Layout>
