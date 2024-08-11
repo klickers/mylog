@@ -180,32 +180,37 @@ export default class LogEntries extends React.Component<Props, State> {
 									>
 										{entry.group.name}
 									</a>
-									<div className="text-sm">
-										{entry.group.type ? (
-											<a
-												href={`/type/${entry.group.type.slug}`}
-											>
-												{entry.group.type.name}
-												&nbsp;&gt;&nbsp;
-											</a>
-										) : (
-											""
-										)}
-										{entry.group.category.map(
-											(cat, index: number) => (
-												<a
-													href={`/category/${cat.slug}`}
-												>
-													{cat.name}
-													{index !=
-													entry.group.category
-														.length -
-														1
-														? ", "
-														: ""}
-												</a>
-											)
-										)}
+									<div className="breadcrumbs text-sm">
+										<ul>
+											{entry.group.type ? (
+												<li>
+													<a
+														href={`/type/${entry.group.type.slug}`}
+													>
+														{entry.group.type.name}
+													</a>
+												</li>
+											) : (
+												""
+											)}
+											<li>
+												{entry.group.category.map(
+													(cat, index: number) => (
+														<a
+															href={`/category/${cat.slug}`}
+														>
+															{cat.name}
+															{index !=
+															entry.group.category
+																.length -
+																1
+																? ", "
+																: ""}
+														</a>
+													)
+												)}
+											</li>
+										</ul>
 									</div>
 								</div>
 								<div className="prose">
