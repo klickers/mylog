@@ -158,8 +158,8 @@ export default class LogEntries extends React.Component<Props, State> {
 					</p>
 				}
 			>
-				{this.state.entries.map((entry: LogEntry) => (
-					<div className="flex gap-6 w-full">
+				{this.state.entries.map((entry: LogEntry, index: number) => (
+					<div className="flex gap-6 w-full" key={index}>
 						<div className="prose text-nowrap w-24">
 							<p
 								className={`badge pt-2 pb-3 ${
