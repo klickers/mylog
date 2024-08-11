@@ -1,7 +1,8 @@
 import React from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
-import { isSameDay, format } from "date-fns"
+import { isSameDay } from "date-fns"
 import DocRender from "../components/DocRender"
+import dateFormat from "../scripts/dateFormat"
 
 interface LogEntry {
 	createdAt: EpochTimeStamp
@@ -167,9 +168,7 @@ export default class LogEntries extends React.Component<Props, State> {
 										: "badge-neutral"
 								}`}
 							>
-								{isSameDay(new Date(), entry.createdAt)
-									? format(entry.createdAt, "hh:mmbbb")
-									: format(entry.createdAt, "MMM dd")}
+								{dateFormat(entry.createdAt)}
 							</p>
 						</div>
 						<div className="w-full">
