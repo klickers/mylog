@@ -63,6 +63,7 @@ export default class LogEntries extends React.Component<Props, State> {
 				},
 			],
 			skip: this.state.start,
+			take: 9,
 		}
 		if (this.props.entriesBy) {
 			variables.where = { group: {} }
@@ -100,12 +101,12 @@ export default class LogEntries extends React.Component<Props, State> {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				query: `
-                    query AllEntries($orderBy: [LogEntryOrderByInput!]!, $skip: Int!${
+                    query AllEntries($orderBy: [LogEntryOrderByInput!]!, $skip: Int!, $take: Int${
 						this.props.entriesBy
 							? ", $where: LogEntryWhereInput!"
 							: ""
 					}) {
-                        logEntries(orderBy: $orderBy, skip: $skip${
+                        logEntries(orderBy: $orderBy, skip: $skip, take: $take${
 							this.props.entriesBy ? ", where: $where" : ""
 						}) {
                             createdAt
@@ -129,18 +130,18 @@ export default class LogEntries extends React.Component<Props, State> {
 				variables,
 			}),
 		})
+		console.log(variables)
 		const data = await res.json()
 		const entries = data.data.logEntries
 
 		this.setState((prevState) => ({
 			numberOfEntries: prevState.numberOfEntries + 9,
-			entries,
+			entries: [...prevState.entries, ...entries],
+			start: prevState.start + 9,
 		}))
+		console.log(entries)
 
-		/*if (entries.length >= data.meta.pagination.total - 1) {
-			console.log(entries.length, data.meta.pagination.total - 1)
-			this.setState({ hasMoreEntries: false })
-		}*/
+		if (entries.length < 9) this.setState({ hasMoreEntries: false })
 	}
 
 	render() {
@@ -153,7 +154,7 @@ export default class LogEntries extends React.Component<Props, State> {
 				hasMore={this.state.hasMoreEntries}
 				loader={<p className="infinite__loader">Loading . . .</p>}
 				endMessage={
-					<p className="infinite__end-message">
+					<p className="infinite__end-message uppercase italic">
 						Yay! You've reached the end.
 					</p>
 				}
@@ -193,23 +194,31 @@ export default class LogEntries extends React.Component<Props, State> {
 											) : (
 												""
 											)}
-											<li>
-												{entry.group.category.map(
-													(cat, index: number) => (
-														<a
-															href={`/category/${cat.slug}`}
-														>
-															{cat.name}
-															{index !=
-															entry.group.category
-																.length -
-																1
-																? ", "
-																: ""}
-														</a>
-													)
-												)}
-											</li>
+											{entry.group.category ? (
+												<li>
+													{entry.group.category.map(
+														(
+															cat,
+															index: number
+														) => (
+															<a
+																href={`/category/${cat.slug}`}
+															>
+																{cat.name}
+																{index !=
+																entry.group
+																	.category
+																	.length -
+																	1
+																	? ", "
+																	: ""}
+															</a>
+														)
+													)}
+												</li>
+											) : (
+												""
+											)}
 										</ul>
 									</div>
 								</div>
