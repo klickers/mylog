@@ -130,7 +130,6 @@ export default class LogEntries extends React.Component<Props, State> {
 				variables,
 			}),
 		})
-		console.log(variables)
 		const data = await res.json()
 		const entries = data.data.logEntries
 
@@ -139,7 +138,6 @@ export default class LogEntries extends React.Component<Props, State> {
 			entries: [...prevState.entries, ...entries],
 			start: prevState.start + 9,
 		}))
-		console.log(entries)
 
 		if (entries.length < 9) this.setState({ hasMoreEntries: false })
 	}
@@ -161,7 +159,7 @@ export default class LogEntries extends React.Component<Props, State> {
 			>
 				{this.state.entries.map((entry: LogEntry, index: number) => (
 					<div className="flex gap-6 w-full" key={index}>
-						<div className="prose text-nowrap w-24">
+						<div className="prose text-nowrap w-28">
 							<p
 								className={`badge pt-2 pb-3 ${
 									isSameDay(new Date(), entry.createdAt)
