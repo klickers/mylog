@@ -1,8 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import LogEntries from "../components/LogEntries"
+
+const name = import.meta.env.PUBLIC_USER_NAME
 ---
 
-<Layout title="Catherine's Activity Log">
+<Layout title={`${name}'s Activity Log`}>
 	<LogEntries client:load />
 </Layout>
